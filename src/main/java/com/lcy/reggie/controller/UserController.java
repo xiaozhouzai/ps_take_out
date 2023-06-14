@@ -18,6 +18,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
 
+/**
+ * @eo.api-type http
+ * @eo.groupName 默认分组
+ * @eo.path /user
+ */
+
 @RestController
 @RequestMapping("/user")
 @Slf4j
@@ -30,6 +36,11 @@ public class UserController {
      * 发送手机短信验证码
      * @param user
      * @return
+     * @eo.name 发送手机短信验证码
+     * @eo.url /sendMsg
+     * @eo.method post
+     * @eo.request-type json
+     * @param session
      */
     @PostMapping("/sendMsg")
     public R<String> sendMsg(@RequestBody User user, HttpSession session){
@@ -42,8 +53,7 @@ public class UserController {
             log.info("code={}",code);
 
             //调用阿里云提供的短信服务API完成发送短信
-            SMSUtils.sendMessage("瑞吉外卖","SMS_461435232",phone,code);
-
+//            SMSUtils.sendMessage("瑞吉外卖","SMS_461435232",phone,code);
             //需要将生成的验证码保存到Session
             session.setAttribute(phone,code);
 
@@ -58,6 +68,10 @@ public class UserController {
      * @param map
      * @param session
      * @return
+     * @eo.name 移动端用户登录
+     * @eo.url /login
+     * @eo.method post
+     * @eo.request-type json
      */
     @PostMapping("/login")
     public R<User> login(@RequestBody Map map, HttpSession session){
@@ -65,20 +79,15 @@ public class UserController {
 
         //获取手机号
         String phone = map.get("phone").toString();
-
         //获取验证码
         String code = map.get("code").toString();
-
         //从Session中获取保存的验证码
         Object codeInSession = session.getAttribute(phone);
-
         //进行验证码的比对（页面提交的验证码和Session中保存的验证码比对）
         if(codeInSession != null && codeInSession.equals(code)){
             //如果能够比对成功，说明登录成功
-
             LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
             queryWrapper.eq(User::getPhone,phone);
-
             User user = userService.getOne(queryWrapper);
             if(user == null){
                 //判断当前手机号对应的用户是否为新用户，如果是新用户就自动完成注册

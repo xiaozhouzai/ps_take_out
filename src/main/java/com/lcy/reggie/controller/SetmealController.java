@@ -6,10 +6,8 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.lcy.reggie.common.R;
 import com.lcy.reggie.dto.SetmealDto;
 import com.lcy.reggie.pojo.Category;
-import com.lcy.reggie.pojo.Dish;
 import com.lcy.reggie.pojo.Setmeal;
 import com.lcy.reggie.service.CategoryService;
-
 import com.lcy.reggie.service.SetmealService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -147,4 +145,15 @@ public class SetmealController {
         setmealService.deleteWithDish(ids);
         return R.success("删除成功");
     }
+
+    @GetMapping("/list")
+     public R<List<Setmeal>> list(Setmeal setmeal){
+        //根据cateforyId查询套餐信息
+         LambdaQueryWrapper<Setmeal> queryWrapper=new LambdaQueryWrapper<>();
+         //添加条件展示状态为起售的套餐
+         queryWrapper.eq(Setmeal::getStatus,1);
+         queryWrapper.eq(setmeal.getCategoryId()!=null,Setmeal::getCategoryId,setmeal.getCategoryId());
+         List<Setmeal> list = setmealService.list(queryWrapper);
+         return R.success(list);
+     }
 }

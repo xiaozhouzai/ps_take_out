@@ -28,8 +28,10 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
     protected void addResourceHandlers(ResourceHandlerRegistry registry){
         //向下复制一行快捷键ctrl+D
         log.info("静态资源正在映射中");
-        registry.addResourceHandler("/backend/**").addResourceLocations("classpath:/backend/");
-        registry.addResourceHandler("/front/**").addResourceLocations("classpath:/front/");
+        registry.addResourceHandler("/backend/**")
+                .addResourceLocations("classpath:/backend/");
+        registry.addResourceHandler("/front/**")
+                .addResourceLocations("classpath:/front/");
     }
 
     /**
