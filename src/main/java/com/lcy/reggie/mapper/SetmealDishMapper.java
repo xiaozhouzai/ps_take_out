@@ -1,7 +1,6 @@
 package com.lcy.reggie.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.lcy.reggie.dto.SetmealDto;
 import com.lcy.reggie.pojo.SetmealDish;
 import org.apache.ibatis.annotations.Mapper;
 
